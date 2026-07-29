@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS - Social Network</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-window">
+        <div class="header-title" id="headerTitle">NEXUS - AUTENTICAÇÃO</div>
+
+        <div id="telaLogin" class="auth-screen">
+            <div class="auth-card">
+                <div class="bg-login"></div>
+                <div class="form-container">
+                    <label for="caixaEmail">E-MAIL:</label>
+                    <input type="email" id="caixaEmail" placeholder="seuemail@exemplo.com" autofocus>
+
+                    <label for="caixaSenha">SENHA:</label>
+                    <input type="password" id="caixaSenha" placeholder="Digite sua senha">
+                    
+                    <button class="btn btn-primary btn-full mb-8" id="btnEntrar">ENTRAR</button>
+
+                    <div class="auth-footer text-center">
+                        <span class="txt-muted text-11">Ainda não tem uma conta?</span>
+                        <button class="btn-link text-11" id="btnIrCadastro">CRIAR CONTA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="telaCadastro" class="auth-screen display-none">
+            <div class="auth-card">
+                <div class="bg-login"></div>
+                <div class="form-container">
+                    <label for="cadNome">NOME COMPLETO:</label>
+                    <input type="text" id="cadNome" placeholder="Seu nome completo">
+
+                    <label for="cadUsuario">NOME DE USUÁRIO (ID único):</label>
+                    <input type="text" id="cadUsuario" placeholder="ex: carlos_dev">
+
+                    <label for="cadEmail">E-MAIL:</label>
+                    <input type="email" id="cadEmail" placeholder="seuemail@exemplo.com">
+
+                    <label for="cadSenha">SENHA (mínimo 6 caracteres):</label>
+                    <input type="password" id="cadSenha" placeholder="Crie uma senha forte">
+
+                    <label for="cadFotoInput">FOTO DE PERFIL:</label>
+                    <input type="file" id="cadFotoInput" accept="image/*" class="mb-12">
+                    
+                    <button class="btn btn-primary btn-full mb-8" id="btnCadastrar">CADASTRAR</button>
+
+                    <div class="auth-footer text-center">
+                        <span class="txt-muted text-11">Já tem uma conta?</span>
+                        <button class="btn-link text-11" id="btnVoltarLogin">VOLTAR AO LOGIN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="telaPrincipal" class="display-none">
+            
+            <div class="top-nav">
+                <div class="top-nav-left">
+                    <button class="btn btn-secondary" id="btnHome">🏠 HOME</button>
+                    <button class="btn btn-secondary" id="btnMensagensNav">💬 CHAT</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="txtBuscaGlobal" placeholder="Pesquisar usuários...">
+                    <button class="btn btn-secondary" id="btnBuscarGlobal">🔍</button>
+                </div>
+                <div class="top-nav-right">
+                    <button class="btn btn-secondary" id="btnConfig">⚙️ CONFIG</button>
+                    <div id="imgNavAvatar" class="nav-avatar-btn"></div>
+                </div>
+            </div>
+
+            <div class="main-body">
+                
+                <div id="subTelaHome">
+                    <div class="feed-container">
+                        <div class="create-post-card">
+                            <h3 class="txt-accent text-12 mb-8" id="welcomeUserTitle">NOVA PUBLICAÇÃO</h3>
+                            <textarea id="postTextoInput" placeholder="No que você está pensando?" rows="3"></textarea>
+                            <div class="post-upload-row">
+                                <input type="file" id="postMidiaInput" accept="image/*,video/*" class="text-11">
+                                <button class="btn btn-primary" id="btnPublicar">POSTAR</button>
+                            </div>
+                        </div>
+                        <div class="feed-posts-list" id="feedPostsList"></div>
+                    </div>
+                </div>
+
+                <div id="subTelaChat" class="display-none">
+                    <div class="chat-layout">
+                        <div class="chat-sidebar">
+                            <h3 class="txt-accent text-12 mb-8">CONVERSAS (Seguidores mútuos)</h3>
+                            <div class="chat-contacts-list" id="chatContactsList"></div>
+                        </div>
+                        <div class="chat-window-box">
+                            <div class="chat-header-info" id="chatHeaderInfo">Selecione uma conversa</div>
+                            <div class="chat-messages-container" id="chatMessagesContainer"></div>
+                            <div class="chat-input-row display-none" id="chatInputRow">
+                                <input type="text" id="chatMsgInput" placeholder="Digite sua mensagem...">
+                                <button class="btn btn-primary" id="btnEnviarMsg">ENVIAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="subTelaPerfil" class="display-none">
+                    <div class="profile-page-card">
+                        <div id="profilePageAvatar" class="profile-page-avatar"></div>
+                        <h2 class="txt-primary mt-12" id="profilePageName">Nome</h2>
+                        <p class="txt-accent text-12" id="profilePageUser">@usuario</p>
+                        <p class="txt-muted text-11 mt-5 italic" id="profilePageBio">Bio</p>
+                        
+                        <div class="profile-actions-row mt-12 mb-12">
+                            <button class="btn btn-primary btn-full" id="btnSeguirPerfil">SEGUIR</button>
+                        </div>
+
+                        <div class="profile-stats-bar">
+                            <span id="statSeguidores" class="cursor-pointer">0 Seguidores</span>
+                            <span id="statSeguindo" class="cursor-pointer">0 Seguindo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="subTelaConfig" class="display-none">
+                    <h3 class="txt-accent">CONFIGURAÇÕES DE TEMA</h3>
+                    <p class="txt-primary mt-5">Escolha a aparência desejada:</p>
+                    <div class="theme-buttons">
+                        <button class="btn btn-primary" id="btnTemaEscuro">🌙 MODO ESCURO</button>
+                        <button class="btn btn-secondary" id="btnTemaClaro">☀️ MODO CLARO</button>
+                    </div>
+
+                    <hr class="hr-theme mt-12 mb-12">
+
+                    <h3 class="txt-accent">CONTA E SESSÃO</h3>
+                    <p class="txt-primary mt-5 mb-8">Gerencie o acesso à sua conta na nuvem.</p>
+                    <button class="btn btn-danger" id="btnSair">🚪 SAIR DA CONTA (LOGOUT)</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

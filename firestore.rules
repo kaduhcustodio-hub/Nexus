@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return signedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if isOwner(uid);
+      allow update: if isOwner(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /posts/{postId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.usuario == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario;
+      allow update, delete: if signedIn() && (resource.data.usuario == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario || isAdmin());
+    }
+
+    match /comments/{commentId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.usuario == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario;
+      allow update, delete: if signedIn() && (resource.data.usuario == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario || isAdmin());
+    }
+
+    match /messages/{messageId} {
+      allow read: if signedIn() && (isAdmin() || resource.data.from == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario || resource.data.to == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario);
+      allow create: if signedIn() && request.resource.data.from == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario;
+      allow update: if signedIn() && (resource.data.to == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario || resource.data.from == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario);
+      allow delete: if isAdmin();
+    }
+
+    match /follows/{followId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.resource.data.follower == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario;
+      allow delete: if signedIn() && resource.data.follower == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.usuario;
+    }
+
+    match /postVotes/{voteId} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update: if signedIn() && resource.data.uid == request.auth.uid;
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+  }
+}
